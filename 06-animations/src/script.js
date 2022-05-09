@@ -43,9 +43,9 @@ gsap.to(mesh.position, { duration: 1, delay: 2, x: 2 });
 // Animations
 const tick = () => {
   // // Time
-  // // const currentTime = Date.now()
-  // // const deltaTime = currentTime - time;
-  // // time = currentTime;
+  // const currentTime = Date.now()
+  // const deltaTime = currentTime - time;
+  // time = currentTime;
 
   // // Clock
   // const elapsedTime = clock.getElapsedTime()
@@ -58,7 +58,7 @@ const tick = () => {
   // camera.position.y = Math.cos(elapsedTime)
   // camera.lookAt(mesh.position)
 
-  // // Render
+  // Render
   renderer.render(scene, camera);
 
   window.requestAnimationFrame(tick);
