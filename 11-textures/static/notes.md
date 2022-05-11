@@ -102,3 +102,70 @@ We can see these UV coordinates in `geometry.attributes.uv`. These are generated
 
 ### Repeat
 
+We can use the `repeat` property to repeat the texture. Uses a Vector2 with `x` and `y` properties. we change `THREE.RepeatWrapping` on the `wrapS` and `wrapT` props. we can alternate direction with `THREE.MirroredRepeatWrapping`
+
+we can offset the texture using the `offset` property (Vector2)
+
+### Rotate
+use the `rotation` property to rotate the texture. To rotate half a revolution, use `Math.PI`, multiply by 2 for full rev. 
+
+Rotation occurs around the bottom left corner by default. this is the `0, 0` UV coordinate. Move the pivot point with the `center` property (Vector2).
+
+### Filtering and Mipmapping
+If you look at top face while face is almost hidden, you'll see a blurry texture. This is due to filtering and mipmapping.
+
+Mipmapping is a technique that consists of creating half of a texture again and again until we get a 1x1 texture. GPU will use different versions depending on how much of the pixel you can see. This is handled by Three.js but we can use different algorithms.
+
+#### Minification filter
+happens when pixels of of texture are smaller than pixels of render. Texture is too big for surface it covers. can change using the `minFilter` property with 6 differenet values. 
+
+* `Three.NearestFilter` (very sharp)
+* `Three.LinearFilter`
+* `Three.NearestMipmapNearestFilter`
+* `Three.NearestMipmapLinearFilter`
+* `Three.LinearMipmapNearestFilter`
+* `Three.LinearMipmapLinearFilter` (default)
+
+Artifacts seen when zoomed out are called moíre patterns (test with checkerboard-1024)
+
+If you're using `THREE.NearestFilter` on `minFilter` we don't need mipmaps and can deactivate with `colorTexture.generateMipmaps = fale`
+
+#### Magnification filter
+Happens when pixels of texture are bigger than pixels of render. Texture is too small for the surface it covers. It looks bad but it depends on the context. If the effect isn't too exaggerateed, the user will probably not notice. 
+
+We can change the magnification filiter using the `magFilter` prop with these 2 values.
+* `Three.NearestFilter` - scales texture to remove blur (minecraft style)
+* `Three.LinearFilter` (default, better performance)
+
+## Texture format and optimization
+When preparing textures keep 3 things in mind. The difficulty is finding the right combination of texture formats and resolutions.
+* The weight
+* The size (resolution)
+* The data
+
+### Weight
+Users will have to download textures, so choose right type of file
+* `.jpg` - lossy compression but usually lighter
+* `.png` - lossless compression but usually heavier
+Use compression websites/software like TinyPNG if needed
+
+### Size
+Each pixel of texture will be stored on GPU regardless of image's weight
+GPU has storage limitation, even worse because mipmapping increases pixels stored. try to reduce size of image as much as possible. 
+
+mipmapping will produce half texture repeatedly until 1x1. Because of that, texture width and height must be a power of 2. 
+
+### Data
+Textures support transparency but we can't have transparency in `.jpg` If we want to have only one texture that combines color and alpha, we need to use `.png` file. 
+
+If using a `normal` texture we want to have the exact values which is why we shouldn't apply lossy compression and should stick to `.png`
+
+Sometimes we can combine different data into one texture using red, green, blue and alpha channels seperately. 
+
+## Where to find textures
+Always hard to find textures, but a couple good places to start.
+* poliigon.com
+* 3dtextures.me
+* arroway-textures.ch
+
+Can also create you own using photos and 2D software like Photoshop or even procedural textures with software like https://www.substance3d.com/products/substance-designer/
