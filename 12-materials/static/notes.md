@@ -67,3 +67,47 @@ This is the one of the most usable materials. It uses phsyically based rendering
 In our case, it's the same coordinates as the default UV so we are going to reuse it. Make sure to establish that each vertex is defined by 2 points, declared using the 3rd parameter of the `THREE.BufferAttribute(...)` using `2`. 
 
 Control the intensity with `aoMapIntensity`
+
+`displacementMap` will move the vertices to create relief. It looks terrible because it lacks vertices and the displacement is way too strong.
+
+instead of specifying uniform `metalness` and `roughness` for the whole geometry, we can use `metalnessMap` and `roughnessMap`.
+
+Reflection still looks weird because props still affect each map respectively. Comment out `metalness` and `roughness` or use their original values.
+
+`normalMap` will fake the normals orientation and add details on the surface regardless of subdivision.
+
+change the normal intensity with the `normalScale` property (Vector2).
+
+Finally, we can control the alpha using the `alphaMap` property. Don't forget `transparent = true`
+
+## Mesh Physical Material 
+Same as `MeshStandardMaterial` but with support for a clear coat effect.
+
+## Points Material
+You can use `PointsMaterial` with particles
+
+## Shader Material and Raw Shader Materials
+Use when you want to create your own materials
+
+## Environment Map
+an image of what's surrounding the scene. It can be used for reflection or refraction but also for general lighting. Supported by multiple materials but we are going to use `MeshStandardMaterial`
+
+Three.js only supports cube environment maps. You can find multiple environment maps in the `/static/` folder.
+
+To load a cube texture, we must use the `CubeTextureLoader` instead of `TextureLoader`
+
+Instantiate the `CubeTextureLoader` before instantiating the `material` and call its `load(...)` method but use an array of paths (look at code for specific order needed)
+
+use the `environmentMapTexture` with the `envMap` property to apply
+
+You can tweak the `metalness` and `roughness` for different results and test other environment maps for the `/static/` folder.
+
+### Where to find environment maps?
+you can always do simple web searches but make sure you have the right to use them.
+
+There's also HDRIHaven:
+https://hdrihaven.com/
+Hundreds of awesome HDRIs with CC0 license which means you have free use to use them for any kind of work. You can thank them by subbing to their patreon. 
+
+To convert these HDRIs to cube maps, use this website: 
+https://matheowis.github.io/HDRI-to-CubeMap/
