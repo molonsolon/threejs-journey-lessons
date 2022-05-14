@@ -55,4 +55,19 @@ Change `shadow.mapSize`.
 
 ## Point Light
 Set up this light and the camera helper the same as we did in the previous two.
-Camera helper is a `PerspectiveCamera` facing downward. It is bound by 6 points and faces downward because it needs to have a good reference to it's surrounding for shadows.
+Camera helper is a `PerspectiveCamera` facing downward. It is bound by 6 points and faces downward because it needs to have a good reference to it's surrounding for shadows, points in all directions. 
+
+To optimize, we can tweak `mapSize`, `near` and `far`.
+
+## Baking Shadows
+A good alternative to Three.js shadows is baked shadows. This involves integrating the shadows into the texture themselves. 
+
+To swap these, we can deactivate all shadows from the renderer with `renderer.shadowMap.enable = false`
+
+instead of `MeshStandardMaterial` use `MeshBasicMaterial` on the plane material with the `bakedShadow` texture. Unfortunately, this is static (unresponsive to movement)
+
+## Baking Shadows Alternative
+we can also use a simpler baked shadow and move it so it stays under the sphere. That way, when the sphere moves, the plane follows. When the sphere gets farther away, we reduce alpha, closer to plane increase alpha. 
+You can create a plane slightly above the floor with an `alphaMap` using the `simpleShadow`, making sure to set the `transparent` value to `true`
+
+Animating the sphere in this lesson involves using the `Math.abs()` function which keeps whatever values applied positive.
