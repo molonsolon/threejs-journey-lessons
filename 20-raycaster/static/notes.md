@@ -40,3 +40,23 @@ We establish our direction and origin within the `tick` then check for intersect
 This, however, just turns everything blue. This is because when we start, the ray goes through all the spheres. We need to have a check that continuously updates. We can turn all the objects red before turning them blue on intersect. This give us our intended effect 
 
 ## Use the raycaster with the mouse
+We can use the raycaster to test if an object is behind the moust.
+
+We need the coordinates of the moust but not in pixels. We need a value that goes from `-1` to `+1` on horizontal and vertical axes. 
+
+Create a `mouse` variable with a `Vector2` and update it when the mouse is moving.
+
+use the `setFromCamera()` method to orient the ray in the right direction. The rest is the same as before.
+
+## Mouse enter and mouse leave events
+Here's the basic concept:
+* create a "witness" variable containing the currently hovered object
+* if an object intersects when there wasn't one before, a `mouseenter` occurs
+* if no object intersects when there was one before, a `mouseleave` occurs
+
+create the variable, then test and update the `currentIntersect` variable. We first check if anything has been pushed to the `intersects` array and, if so, then test for if our `currentIntersect` is null. If so, we have a mouse enter event. If `intersects` is empty, we then test if `currentIntersect` is exists and if so, it registers as a mouse leave event
+
+## Mouse click event
+We can now implement a `click` event and listen to it. We can then use our `currentIntersect` "witness" variable to register clicks properly. This is because the click will then only register if we are hovering over an object set to be watched.
+
+We can also test which object is being clicked on
